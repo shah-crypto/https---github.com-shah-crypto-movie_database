@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from .models import Movie
+from django.db.models import Q
 from django.views.generic import TemplateView,ListView,DetailView
 from django.shortcuts import get_object_or_404
 
@@ -35,3 +36,20 @@ class MovieDetailView(DetailView):
     model = Movie
     context_object_name = 'movie'
     template_name = 'movie_detail.html'
+
+def MovieSearchView(request):
+    if request.method == 'GET':
+        query = request.GET.get('q')
+        submitbutton= request.GET.get('submit')
+
+        if query is not None:
+            lookups= Q(name__icontains=query)
+            results= Movie.objects.filter(lookups).distinct()
+            context={'results': results,
+                     'submitbutton': submitbutton,
+                     'show': 1}
+            return render(request, 'movie_list.html', context)
+        else:
+            return render(request, 'movie_list.html')
+    else:
+        return render(request, 'movie_list.html')

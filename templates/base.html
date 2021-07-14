@@ -73,9 +73,9 @@
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Add new</a>
               </li> -->
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-dark btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
+                <form action="{% url 'movie-search' %}" method="GET" value="{{request.GET.q}}" class="d-flex">
+                    <input class="form-control me-2" type="search" name="q" value="{{request.GET.q}}" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-dark btn-outline-light" value="Search" name="submit" type="submit"><i class="fas fa-search"></i></button>
                 </form>
             </div>
         </div>

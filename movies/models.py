@@ -35,3 +35,6 @@ class Movie(models.Model):
     cast = models.TextField()
     link = models.URLField()
     popular = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name + " (" + self.genre + ")"

@@ -16,11 +16,11 @@
 </style>
 {% if show %}
 <div class="container">
-    {% if submitbutton == 'Search' and request.GET.q != '' %}
+    {% if submitbutton == 'Search' and request.GET.q != "" %}
     {% if results %}
     <div class="row">
         {% for result in results %}
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card h-100">
                 <img src="{{ result.preview_image.url }}" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -36,7 +36,7 @@
         {% endfor %}
         {% else %}
         <span style="color: white;">
-            <h1><br>No search results for this query</h1>
+            <h1><br>Sorry, we couldn't find any such movie.</h1>
         </span>
         {% endif %}
         {% endif %}
@@ -45,11 +45,12 @@
 
 {% else %}
 
+{% if all_movies %}
 <div class="container">
     <h1>Popular on MDB</h1>
     <div class="row">
         {% for movie in all_movies %}
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card h-100">
                 <img src="{{ movie.preview_image.url }}" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -65,6 +66,10 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
+
+
+{% if romance_movies %}
 <br><br>
 <div class="container">
     <h1>Popular Genres</h1>
@@ -74,7 +79,7 @@
     <a href="{% url 'rom-movies_page' %}" class="view-more">View more <i class="fas fa-hand-point-right"></i></a>
     <div class="row">
         {% for movie in romance_movies %}
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card h-100">
                 <img src="{{ movie.preview_image.url }}" class="card-img-top" alt="{{movie.name}}">
                 <div class="card-body">
@@ -90,13 +95,17 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
+
+
+{% if superhero_movies %}
 <br>
 <div class="container">
     <h3>2. Superhero</h3>
     <a href="{% url 'superhero_movies_page' %}" class="view-more">View more <i class="fas fa-hand-point-right"></i></a>
     <div class="row">
         {% for movie in superhero_movies %}
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-6">
             <div class="card h-100">
                 <img src="{{ movie.preview_image.url }}" class="card-img-top" alt="{{movie.name}}">
                 <div class="card-body">
@@ -112,5 +121,15 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
+
+{% if all_movies and romance_movies and superhero_movies and show %}
+{% else %}
+<div class="container">
+    <span style="color: white;">
+        <h1><br>Sorry, we couldn't find any such movie.</h1>
+    </span>
+</div>
+{% endif %}
 {% endif %}
 {% endblock content %}

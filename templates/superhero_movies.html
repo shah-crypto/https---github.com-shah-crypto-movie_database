@@ -17,7 +17,7 @@
 <div class="container">
     <h1>Superhero Movies</h1>
     <div class="row">
-        {% for movie in all_superhero_movies %}
+        {% for movie in all_superhero_movies_list %}
         <div class="col-lg-3 col-sm-6">
             <div class="card h-100">
                 <img src="{{ movie.preview_image.url }}" class="card-img-top" alt="{{movie.name}}">

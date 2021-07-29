@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+{% csrf_token %}
+<style>
+    .container{
+        width: 50%;
+        color: white;
+    }
+    #sub_btn{
+        margin: auto;
+        display: block;
+    }
+</style>
+
+<div class="container">
+    <form action="" method="post">
+        {% csrf_token %}
+        <br>
+        {{form.as_p}}
+        <input class="btn btn-primary" id="sub_btn" type="submit" value="Submit">
+    </form>
+        <div style="text-align: center;"><small>**Movies will be displayed after they are approved by the admin.**</small></div>
+</div>
+
+{% endblock content %}

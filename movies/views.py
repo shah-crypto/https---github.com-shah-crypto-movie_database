@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.views.generic import TemplateView,ListView,DetailView
 from django.shortcuts import get_object_or_404
 from random import shuffle
+from .forms import AddMovieForm
 
 # Create your views here.
 class MovieTemplateView(TemplateView):
@@ -16,9 +17,9 @@ class MovieListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super(MovieListView,self).get_context_data(**kwargs)
-        context['all_movies'] = Movie.objects.filter(popular=True).random(12)
-        context['romance_movies'] = Movie.objects.filter(genre='romance').random(8)
-        context['superhero_movies'] = Movie.objects.filter(genre='superhero').random(8)
+        context['all_movies'] = Movie.objects.filter(popular=True,approved=True).random(12)
+        context['romance_movies'] = Movie.objects.filter(genre='romance',approved=True).random(8)
+        context['superhero_movies'] = Movie.objects.filter(genre='superhero',approved=True).random(8)
         return context
 
 class RomanceMovieListView(ListView):
@@ -26,7 +27,7 @@ class RomanceMovieListView(ListView):
     template_name = 'rom_movies.html'
     
     def get_context_data(self):
-        all_romance_movies = Movie.objects.filter(genre='romance')
+        all_romance_movies = Movie.objects.filter(genre='romance',approved=True)
         all_romance_movies_list = list(all_romance_movies)
         shuffle(all_romance_movies_list)
         context = {}
@@ -38,7 +39,7 @@ class SuperheroMovieListView(ListView):
     template_name = 'superhero_movies.html'
     
     def get_context_data(self):
-        all_superhero_movies = Movie.objects.filter(genre='superhero')
+        all_superhero_movies = Movie.objects.filter(genre='superhero',approved=True)
         all_superhero_movies_list = list(all_superhero_movies)
         shuffle(all_superhero_movies_list)
         context = {}
@@ -47,7 +48,7 @@ class SuperheroMovieListView(ListView):
 
 # class SuperheroMovieListView(ListView):
 #     model = Movie
-#     queryset = Movie.objects.filter(genre='superhero')
+#     queryset = Movie.objects.filter(genre='superhero',approved=True)
 #     template_name = 'superhero_movies.html'
 #     context_object_name = 'all_superhero_movies'
     
@@ -63,12 +64,22 @@ def MovieSearchView(request):
 
         if query != '':
             lookups= Q(name__icontains=query)
-            results= Movie.objects.filter(lookups).distinct()
+            results= Movie.objects.filter(lookups,approved=True).distinct()
             search_context={'results': results,
-                     'submitbutton': submitbutton,
-                     'show': True}
-            return render(request, 'movie_list.html', search_context)
+                     'submitbutton': submitbutton}
+            return render(request, 'searchresults.html', search_context)
         else:
-            return render(request, 'movie_list.html')
+            return render(request, 'searchresults.html')
     else:
-        return render(request, 'movie_list.html')
+        return render(request, 'searchresults.html')
+
+def AddMovieView(request):
+    context = {}
+    if request.method == 'POST':
+        form = AddMovieForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = AddMovieForm()
+    context['form'] = form
+    return render(request,'add_movie.html',context)

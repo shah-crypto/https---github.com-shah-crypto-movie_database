@@ -30,11 +30,11 @@ class Movie(models.Model):
     preview_image = models.ImageField(upload_to='photos/',null=True)
     movie_image = models.ImageField(upload_to='photos/')
     year_of_release = models.PositiveIntegerField()
-    movie_time = models.TimeField()
     director = models.CharField(max_length=100)
     cast = models.TextField()
     link = models.URLField()
     popular = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name + " (" + self.genre + ")"

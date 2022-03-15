@@ -26,7 +26,7 @@ SECRET_KEY = 't_*u!^wzqlvf-(bu3_&#$&a*r2@rh=g+v-2e8sa%w6pi5o_v!*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", 'fmovie-database.herokuapp.com']
 
 
 # Application definition
